@@ -8,7 +8,14 @@ class Favorites extends React.Component {
   render() {
     return (
       <div>
-        Favorites!!
+        {console.log(this.props.faves)}
+        {/* {this.props.faves.map(fav => {
+          <div>
+            {fav.title}
+            <br />
+            {fav.description}
+          </div>
+        })} */}
       </div>
     )
   }

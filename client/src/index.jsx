@@ -18,6 +18,7 @@ class App extends React.Component {
     this.getLatest = this.getLatest.bind(this);
     this.getGenres = this.getGenres.bind(this);
     this.getMoviesByGenre = this.getMoviesByGenre.bind(this);
+    this.swapFavorites = this.swapFavorites.bind(this);
   }
 
   componentDidMount() {
@@ -27,8 +28,8 @@ class App extends React.Component {
 
   getGenres() {
     axios.get('/genre')
-      .then(resp => {
-        this.setState({ moviesByGenre: resp.data.genres})
+      .then(({data}) => {
+        this.setState({ moviesByGenre: data.genres});
       })
       .catch(err => console.error(`err in genre in index.jsx: ${err}`));
   }
@@ -48,6 +49,10 @@ class App extends React.Component {
       .catch(err => console.error(`err in getMoviesByGenre: ${err}`));
   }
 
+  swapFavorites() {
+    this.setState({ showFaves: !this.state.showFaves });
+  }
+
   render() {
     let options = this.state.moviesByGenre.map(genre => {
       return (
@@ -60,7 +65,7 @@ class App extends React.Component {
       <select onChange={this.getMoviesByGenre}>
         {options}
       </select>
-       <Movies movies={this.state.currentMovies} />
+       <Movies faves={this.state.showFaves} movies={this.state.showFaves ? this.state.currentMovies: this.state.currentMovies} show={this.swapFavorites}/>
        <Favorites faves={this.state.favoriteMovies} />
       </div>
     );

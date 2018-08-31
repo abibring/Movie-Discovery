@@ -6,14 +6,14 @@ const db = mysql.createConnection({
   password: 'rootroot', 
   database: 'moviesmvp',
 })
-exports.saveMovie = () => {
+exports.saveMovie = (movie, cb) => {
+  db.query(`INSERT INTO favorites(id, title, poster, description, vote) VALUES(?, ?, ?, ?, ?)`, [])
+};
+
+exports.deleteMovie = (movie, cb) => {
 
 };
 
-exports.deleteMovie = () => {
+exports.showFavorites = (cb) => {
 
-};
-
-exports.showFavorites = () => {
-  
 }

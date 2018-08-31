@@ -4,7 +4,7 @@ CREATE DATABASE moviesMVP;
 
 USE moviesMVP;
 
-CREATE TABLE saved (
+CREATE TABLE favorites (
   id INT(20) NOT NULL,
   title VARCHAR(50) NOT NULL,
   poster VARCHAR(100),
