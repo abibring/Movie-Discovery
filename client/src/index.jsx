@@ -20,6 +20,7 @@ class App extends React.Component {
     this.getMoviesByGenre = this.getMoviesByGenre.bind(this);
     this.swapFavorites = this.swapFavorites.bind(this);
     this.saveFavorite = this.saveFavorite.bind(this);
+    this.getFavorites = this.getFavorites.bind(this);
   }
 
   componentDidMount() {
@@ -37,7 +38,7 @@ class App extends React.Component {
 
   getLatest() {
     axios.get('/latest')
-    .then(resp => this.setState({ currentMovies: resp.data.results }))
+    .then(({data}) => this.setState({ currentMovies: data.results }))
     .catch(err => console.error(`err in latest in index.jsx: ${err}`));
   }
 
@@ -50,13 +51,23 @@ class App extends React.Component {
       .catch(err => console.error(`err in getMoviesByGenre: ${err}`));
   }
 
+  getFavorites() {
+    axios.get('faves')
+      .then(({data}) => this.setState({ favoriteMovies: [...this.state.favoriteMovies, data]}))
+      .catch(err => console.error(`err in axios.get faves: ${err}`))
+  }
+
   swapFavorites() {
     this.setState({ showFaves: !this.state.showFaves });
   }
 
   saveFavorite(movie) {
     axios.post('/faves', { movie: movie })
-      .then((data) => console.log(`response in axios.post.saveFavorite: ${JSON.stringify(data)}`))
+      .then(({data}) => {
+        this.getFavorites();
+        this.setState({ favoriteMovies: [...this.state.favoriteMovies, data] })
+        alert('You have saved your movie to the database!')
+      })
       .catch(err => console.error(`err in saveFavorite: ${err}`));
   }
 
@@ -72,8 +83,8 @@ class App extends React.Component {
       <select onChange={this.getMoviesByGenre}>
         {options}
       </select>
-       <Movies faves={this.state.showFaves} movies={this.state.showFaves ? this.state.currentMovies: this.state.currentMovies} show={this.swapFavorites} saveFav={this.saveFavorite}/>
-       <Favorites faves={this.state.favoriteMovies} />
+       <Movies faves={this.state.showFaves} save={this.saveFavorite} movies={this.state.showFaves ? this.state.favoriteMovies: this.state.currentMovies} show={this.swapFavorites} saveFav={this.saveFavorite} getfaves={this.getFavorites}/>
+       {/* <Favorites faves={this.state.favoriteMovies} /> */}
       </div>
     );
   }

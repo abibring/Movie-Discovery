@@ -9,13 +9,13 @@ class Favorites extends React.Component {
     return (
       <div>
         {console.log(this.props.faves)}
-        {/* {this.props.faves.map(fav => {
+        {this.props.faves.map(fav => {
           <div>
             {fav.title}
             <br />
             {fav.description}
           </div>
-        })} */}
+        })}
       </div>
     )
   }

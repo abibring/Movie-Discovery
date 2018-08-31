@@ -1,14 +1,17 @@
 import React from 'react';
 
-const Movies = ({ movies, show, faves, saveFav }) => {
+const Movies = ({ movies, show, faves, save, getfaves }) => {
   const style = { height: 220, width: 210 };
   return (
     <div className="container">
       <div className="row">
-      <button onClick={() => { show() }}>{ faves ? "Show Movies" : "Show Favorites" }</button>
+      <button onClick={() => {
+         show();
+         getfaves();
+         }}>{ faves ? "Show Movies" : "Show Favorites" }</button>
         {movies.map(movie => {
           return (
-            <div key={movie.id} className="col" onClick={() => saveFav(movie)}>
+            <div key={movie.id} className="col" onClick={() => save(movie)}>
               <img
                 src={'https://image.tmdb.org/t/p/w500/' + movie.poster_path}
                 style={style}
