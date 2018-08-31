@@ -1,0 +1,9 @@
+DROP DATABASE IF EXISTS moviesMVP;
+
+CREATE DATABASE moviesMVP;
+
+USE moviesMVP;
+
+CREATE TABLE saved (
+  
+);
