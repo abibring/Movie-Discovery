@@ -5,5 +5,10 @@ CREATE DATABASE moviesMVP;
 USE moviesMVP;
 
 CREATE TABLE saved (
-  
+  id INT(20) NOT NULL,
+  title VARCHAR(50) NOT NULL,
+  poster VARCHAR(100),
+  description VARCHAR(255) NOT NULL,
+  vote INT(20) NOT NULL,
+  PRIMARY KEY(id)
 );

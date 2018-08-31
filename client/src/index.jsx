@@ -13,7 +13,7 @@ class App extends React.Component {
       favoriteMovies: [],
       moviesByGenre: [],
       similarMovies: [],
-      latestMovies: []
+      currentMovies: []
     };
     this.getLatest = this.getLatest.bind(this);
     this.getGenres = this.getGenres.bind(this);
@@ -28,7 +28,6 @@ class App extends React.Component {
   getGenres() {
     axios.get('/genre')
       .then(resp => {
-        console.log(`resp in genre in index.jsx: ${JSON.stringify(resp.data.genres)}`);
         this.setState({ moviesByGenre: resp.data.genres})
       })
       .catch(err => console.error(`err in genre in index.jsx: ${err}`));
@@ -36,21 +35,23 @@ class App extends React.Component {
 
   getLatest() {
     axios.get('/latest')
-    .then(resp => this.setState({ latestMovies: resp.data.results }))
+    .then(resp => this.setState({ currentMovies: resp.data.results }))
     .catch(err => console.error(`err in latest in index.jsx: ${err}`));
   }
 
   getMoviesByGenre(e) {
-    console.log(`genre: ${e.target.value}`);
-    axios.get('/genres', { params: e.target.value})
-      .then(results => console.log(`results in getMoviesByGenre: ${results}`))
+    let genre = e.target.value;
+    axios.get('/genres', { params: { genre:  genre }})
+      .then(({data}) => {
+        this.setState({ currentMovies: data })
+      })
       .catch(err => console.error(`err in getMoviesByGenre: ${err}`));
   }
 
   render() {
     let options = this.state.moviesByGenre.map(genre => {
       return (
-       <option key={genre.id}>{genre.name}</option>
+       <option key={genre.id} value={genre.id}>{genre.name}</option>
       );
     });
     return (
@@ -59,7 +60,7 @@ class App extends React.Component {
       <select onChange={this.getMoviesByGenre}>
         {options}
       </select>
-       <Movies movies={this.state.latestMovies} />
+       <Movies movies={this.state.currentMovies} />
        <Favorites faves={this.state.favoriteMovies} />
       </div>
     );
