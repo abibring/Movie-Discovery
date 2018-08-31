@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 // const routes = require('./resources/movie/movieRouter.js');
 const { getGenres, getLatestMovies, getMoviesByGenre } = require('../helpers/apiHelpers.js');
 // const movieRouter = require('./resources/movie/movieRouter.js');
+const save = require('./db/index.js').save
 
 const app = express();
 
@@ -44,6 +45,19 @@ app.get('/latest', (req, res) => {
       res.status(404).send(err);
     });
 });
+
+app.post('/faves', (req, res) => {
+  let { movie } = req.body;
+  save(movie, (err, results) => {
+    if (err) {
+      console.log(`errrrrrr: ${err}`)
+      res.status(404).send(err)
+    } else {
+      console.log(`: ${results}`)
+      res.status(201).send(results);
+    }
+  })
+})
 
 
 module.exports = app;

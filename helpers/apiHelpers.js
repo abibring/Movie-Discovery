@@ -12,8 +12,6 @@ const getLatestMovies = () => {
 };
 
 const getMoviesByGenre = (genre) => {
-  console.log(`genre in getMoviesByGenre apiHelper: ${genre}`);
-  let queryString = { with_genres: genre, include_adult: false, sort_by: 'release_date.asc', language: 'en-US', apy_key: API_KEY};
   return axios.get(`http://api.themoviedb.org/3/discover/movie?with_genres=${genre}&include_adult=false&sort_by=release_date.asc&language=en-US&api_key=${API_KEY}`)
 };
 
