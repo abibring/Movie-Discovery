@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.get('/genre', (req, res) => {
   getGenres()
     .then(({data}) => {
-      console.log(`data in getGenres: ${JSON.stringify(data.genres)}`)
+      // console.log(`data in getGenres: ${JSON.stringify(data.genres)}`)
       res.status(200).send(data);
     })
     .catch((err) => {
@@ -28,7 +28,7 @@ app.get('/genres', (req, res) => {
   console.log(`GGG: ${genre}`);
   getMoviesByGenre(genre)
     .then(({data}) => {
-      console.log(`results in app.get genres: ${JSON.stringify(data.results)}`)
+      // console.log(`results in app.get genres: ${JSON.stringify(data.results)}`)
       res.status(200).send(data.results)
     })
     .catch(err => {
@@ -74,9 +74,9 @@ app.get('/faves', (req, res) => {
   })
 });
 
-app.delete('/delete', (req, res) => {
-  console.log(`req.params in app.delete: ${J.stringify(req)}`);
-  remove((req.params.movie), (err, results) => {
+app.delete('/fave', (req, res) => {
+  console.log(`req.params in app.delete: ${JSON.stringify(req.query)}`);
+  remove((req.query.id), (err, results) => {
     if (err) {
       console.error(`err in app.delete: ${err}`)
       res.status(404).send(err);

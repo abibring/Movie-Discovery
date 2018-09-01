@@ -33,8 +33,8 @@ const get = (cb) => {
   })
 }
 
-const remove = (movie, cb) => {
-  db.query(`DELETE FROM favorites WHERE id=${movie.id}`, (err, data) => {
+const remove = (id, cb) => {
+  db.query(`DELETE FROM favorites WHERE id=${id}`, (err, data) => {
     if (err) {
       console.error(`err in delete db: ${err}`);
       cb(err, null);

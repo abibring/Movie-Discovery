@@ -65,19 +65,13 @@ class App extends React.Component {
       .catch(err => console.error(`err in save: ${err}`));
   }
 
-  // getByGenre(e) {
-  //   console.log(e.target.value)
-  //   axios.get('/genres', { params: { genre: e.target.value } })
-  //     .then(({ data }) => {
-  //       console.log(data);
-  //       this.setState({ current: data });
-  //     })
-  //     .catch(err => console.error(`err in getByGenre: ${err}`));
-  // }
-
   deleteMovie(movie) {
-    axios.delete(`delete/:${movie.id}`)
-      .then(data => console.log(data))
+    // console.log(`MOOOOVIEL ${JSON.stringify(movie)}`)
+    axios.delete('/fave', { params: { id: movie.id}})
+      .then(() => {
+        this.getFaves();
+        alert(`${movie.title} has been deleted!`);
+      })
       .catch(err => console.error(`err in delete index.jsx: ${err}`));
   }
 
@@ -91,8 +85,8 @@ class App extends React.Component {
     });
     return (
       <div>
-        <h2>Check Out And Save The Latest Movies</h2>
-        <h6>Click on a movie to save it</h6>
+        <h2>{this.state.showFaves ? 'Check out your favorite movies': 'Find Movies By Genre' }</h2>
+        <h6>{this.state.showFaves ? 'Click on movie to delete from your favorites' : 'Click on a movie to save it' }</h6>
         <button onClick={() => {
             this.swapFaves();
             this.getFaves(); }} >
