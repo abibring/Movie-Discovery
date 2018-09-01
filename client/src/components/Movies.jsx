@@ -10,7 +10,7 @@ const Movies = ({ save, movies, remove, show }) => {
   }
   return (
     <div className="movies">
-     <Grid container spacing={32} style={{ padding: 32 }}>
+     <Grid container justify="center" alignItems="center">
       {movies.map(movie => {
         return (
           <div key={movie.id} className="col" onClick={() => clicked(movie)}>
