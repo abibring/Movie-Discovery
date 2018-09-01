@@ -59,7 +59,7 @@ class App extends React.Component {
       .get('faves')
         .then(({ data }) => {
           console.log(`DATA IN AXIOS.GET: ${JSON.stringify(data)}`);
-          this.setState({ favoriteMovies: [...this.state.favoriteMovies, data] });
+          this.setState({ favoriteMovies: data });
         })
         .catch(err => console.error(`err in axios.get faves: ${err}`));
   }
