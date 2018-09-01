@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server-dev": "nodemon server/index.js",
-    "react-dev": "webpack -d --watch"
+    "start": "webpack && npm run server-dev",
+    "react-dev": "webpack -d --watch",
+    "server-dev": "node server/index.js"
   },
   "author": "",
   "license": "ISC",
