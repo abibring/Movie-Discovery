@@ -2,21 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Movies from './components/Movies.jsx';
-import Delete from './components/Delete.jsx';
-import Options from './components/Options.jsx';
-// import axios from './components/axios.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showFaves: false, favoriteMovies: [], currentMovies: [], moviesByGenre: [] };
+    this.state = { movieId: 4, showFaves: false, favorite: [], current: [], moviesByGenre: [] };
     this.getLatest = this.getLatest.bind(this);
     this.getGenres = this.getGenres.bind(this);
-    this.getMoviesByGenre = this.getMoviesByGenre.bind(this);
-    this.swapFavorites = this.swapFavorites.bind(this);
-    this.saveFavorite = this.saveFavorite.bind(this);
-    this.getFavorites = this.getFavorites.bind(this);
-    // this.updateOptions = this.updateOptions.bind(this);
+    this.getByGenre = this.getByGenre.bind(this);
+    this.swapFaves = this.swapFaves.bind(this);
+    this.save = this.save.bind(this);
+    this.getFaves = this.getFaves.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
 
   componentDidMount() {
@@ -25,8 +22,7 @@ class App extends React.Component {
   }
 
   getGenres() {
-    axios
-      .get('/genre')
+    axios.get('/genre')
       .then(({ data }) => {
         this.setState({ moviesByGenre: data.genres });
       })
@@ -34,59 +30,59 @@ class App extends React.Component {
   }
 
   getLatest() {
-    axios
-      .get('/latest')
-      .then(({ data }) => this.setState({ currentMovies: data.results }))
+    axios.get('/latest')
+      .then(({ data }) => this.setState({ current: data.results }))
       .catch(err => console.error(`err in latest in index.jsx: ${err}`));
   }
 
-  getMoviesByGenre(e) {
-    axios
-      .get('/genres', { params: { genre: e.target.value } })
+  getByGenre(e) {
+    axios.get('/genres', { params: { genre: e.target.value } })
       .then(({ data }) => {
-        this.setState({ currentMovies: data });
+        this.setState({ current: data });
       })
-      .catch(err => console.error(`err in getMoviesByGenre: ${err}`));
+      .catch(err => console.error(`err in getByGenre: ${err}`));
   }
 
-  getFavorites() {
-    axios
-      .get('faves')
+  getFaves() {
+    axios.get('faves')
       .then(({ data }) => {
-        // console.log(`DATA IN AXIOS.GET: ${JSON.stringify(data)}`);
-        this.setState({ favoriteMovies: data });
+        this.setState({ favorite: data });
       })
       .catch(err => console.error(`err in axios.get faves: ${err}`));
   }
 
-  swapFavorites() {
+  swapFaves() {
     this.setState({ showFaves: !this.state.showFaves });
   }
 
-  saveFavorite(movie) {
-    axios
-      .post('/faves', { movie: movie })
+  save(movie) {
+    axios.post('/faves', { movie: movie })
       .then(({ data }) => {
-        this.getFavorites();
-        this.setState({ favoriteMovies: [...this.state.favoriteMovies, data] });
+        this.getFaves();
+        this.setState({ favorite: [...this.state.favorite, data] });
         alert(`Mazal Tov! ${movie.title} has been saved to your favorites!`);
       })
-      .catch(err => console.error(`err in saveFavorite: ${err}`));
+      .catch(err => console.error(`err in save: ${err}`));
   }
 
-  getMoviesByGenre(e) {
-    axios
-      .get('/genres', { params: { genre: e.target.value } })
-      .then(({ data }) => {
-        console.log(data);
-        this.setState({ currentMovies: data });
-        // this.props.moviesByGenre.push(data);
-      })
-      .catch(err => console.error(`err in getMoviesByGenre: ${err}`));
+  // getByGenre(e) {
+  //   console.log(e.target.value)
+  //   axios.get('/genres', { params: { genre: e.target.value } })
+  //     .then(({ data }) => {
+  //       console.log(data);
+  //       this.setState({ current: data });
+  //     })
+  //     .catch(err => console.error(`err in getByGenre: ${err}`));
+  // }
+
+  deleteMovie(movie) {
+    axios.delete(`delete/:${movie.id}`)
+      .then(data => console.log(data))
+      .catch(err => console.error(`err in delete index.jsx: ${err}`));
   }
 
   render() {
-    let options = this.state.moviesByGenre.map(genre => {
+    const options = this.state.moviesByGenre.map(genre => {
       return (
         <option key={genre.id} value={genre.id}>
           {genre.name}
@@ -95,25 +91,19 @@ class App extends React.Component {
     });
     return (
       <div>
-        <h1>Alon's MVP</h1>
-        <button
-          onClick={() => {
-            this.swapFavorites();
-            this.getFavorites(); }} >
+        <h2>Check Out And Save The Latest Movies</h2>
+        <h6>Click on a movie to save it</h6>
+        <button onClick={() => {
+            this.swapFaves();
+            this.getFaves(); }} >
           {this.state.showFaves ? 'Show Movies' : 'Show Favorites'}
         </button>
-        <select onChange={this.getMoviesByGenre}>{options}</select>
-        {/* <Options update={this.getMoviesByGenre}/> */}
+        <select onChange={this.getByGenre}>{options}</select>
         <Movies
-          faves={this.state.showFaves}
-          save={this.saveFavorite}
-          movies={
-            this.state.showFaves
-              ? this.state.favoriteMovies
-              : this.state.currentMovies
-          }
-          show={this.swapFavorites}
-          saveFav={this.saveFavorite}
+          save={this.save}
+          movies={this.state.showFaves ? this.state.favorite : this.state.current}
+          remove={this.deleteMovie}
+          show={this.state.showFaves}
         />
       </div>
     );
