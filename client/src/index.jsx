@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Movies from './components/Movies.jsx';
-import Favorites from './components/Favorites.jsx';
+import Delete from './components/Delete.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -45,9 +45,8 @@ class App extends React.Component {
   }
 
   getMoviesByGenre(e) {
-    let genre = e.target.value;
     axios
-      .get('/genres', { params: { genre: genre } })
+      .get('/genres', { params: { genre: e.target.value } })
       .then(({ data }) => {
         this.setState({ currentMovies: data });
       })
@@ -58,7 +57,7 @@ class App extends React.Component {
     axios
       .get('faves')
         .then(({ data }) => {
-          console.log(`DATA IN AXIOS.GET: ${JSON.stringify(data)}`);
+          // console.log(`DATA IN AXIOS.GET: ${JSON.stringify(data)}`);
           this.setState({ favoriteMovies: data });
         })
         .catch(err => console.error(`err in axios.get faves: ${err}`));
@@ -90,11 +89,10 @@ class App extends React.Component {
     return (
       <div>
         <h1>Alon's MVP</h1>
-        <button
-          onClick={() => {
-            this.swapFavorites();
-            this.getFavorites();
-          }}
+        <button onClick={() => { 
+          this.swapFavorites() 
+          this.getFavorites();
+       }}
         >
           {this.state.showFaves ? 'Show Movies' : 'Show Favorites'}
         </button>
@@ -110,7 +108,7 @@ class App extends React.Component {
           show={this.swapFavorites}
           saveFav={this.saveFavorite}
         />
-        {/* <Favorites faves={this.state.favoriteMovies} /> */}
+        <Delete />
       </div>
     );
   }

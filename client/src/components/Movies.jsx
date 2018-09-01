@@ -15,9 +15,9 @@ const Movies = ({ movies, save, show }) => {
               <div style={{ fontWeight: 'bold' }}>
                 Title: {movie.title}
                 <br />
-                Vote Average: {movie.vote_average}
+                Vote Average: {movie.vote_average || movie.vote}
               </div>
-              <div style={{ flex: 1 }}>Overview: {movie.overview}</div>
+              <div style={{ flex: 1 }}>Overview: {movie.overview || movie.description}</div>
             </div>
           );
         })}
