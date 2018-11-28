@@ -6,6 +6,7 @@ Clone the repo.  You must acquire an API key from [The Movie Database API](https
 
 > npm install
 
+
 > npm run react-dev
 
 > npm run server-dev
